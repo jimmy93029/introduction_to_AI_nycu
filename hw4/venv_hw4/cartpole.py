@@ -55,8 +55,9 @@ class Agent():
         # Begin your code
         """
         np.linsapce select num_bins numbers from the range lower_bound, upper_bound  
+        choose [-1, 1] to skip the first element 0
         """
-        return np.linspace(lower_bound, upper_bound, num_bins)[0:-1]
+        return np.linspace(lower_bound, upper_bound, num_bins)[1:-1]
         # End your code
 
     def discretize_value(self, value, bins):
@@ -78,7 +79,7 @@ class Agent():
         np.digitize find the position x of value where bins[x-1] <= value < bins[x],
         then it turn float value to integer by returning x
         """
-        return np.digitize(value, bins) - 1
+        return np.digitize(value, bins)
         # End your code
 
     def discretize_observation(self, observation):
@@ -247,7 +248,7 @@ def test(env):
 
 if __name__ == "__main__":
     env = gym.make('CartPole-v0')
-    os.makedirs("./Tables", exist_ok=True)
+    os.makedirs("../Tables", exist_ok=True)
 
    # training section:
     for i in range(5):
@@ -257,5 +258,5 @@ if __name__ == "__main__":
     test(env)
     env.close()
 
-    os.makedirs("./Rewards", exist_ok=True)
+    os.makedirs("../Rewards", exist_ok=True)
     np.save("./Rewards/cartpole_rewards.npy", np.array(total_reward))

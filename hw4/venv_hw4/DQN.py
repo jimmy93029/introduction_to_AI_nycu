@@ -212,11 +212,12 @@ class Agent():
         # Begin your code
         """
         First, turn intial state to torch tensor
-        Then, choose max Q(s0, a) for all actoin a
+        Then, choose max Q(s0, a) for all actoin a using target network
         """
+        s0 = self.env.reset()
+        s0_tensor = torch.FloatTensor(s0).unsqueeze(0)
         with torch.no_grad():
-            state_tensor = torch.tensor(self.env.reset(), dtype=torch.float32)
-            q_values = self.evaluate_net(state_tensor)
+            q_values = self.target_net(s0_tensor)
             max_q = float(torch.max(q_values).item())
         return max_q
         # End your code
@@ -285,7 +286,7 @@ def test(env):
 
 if __name__ == "__main__":
     env = gym.make('CartPole-v0')        
-    os.makedirs("./Tables", exist_ok=True)
+    os.makedirs("../Tables", exist_ok=True)
 
     # training section:
     for i in range(5):
@@ -296,5 +297,5 @@ if __name__ == "__main__":
     test(env)
     env.close()
 
-    os.makedirs("./Rewards", exist_ok=True)
+    os.makedirs("../Rewards", exist_ok=True)
     np.save("./Rewards/DQN_rewards.npy", np.array(total_rewards))
